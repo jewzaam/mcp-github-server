@@ -1,0 +1,33 @@
+# Example MCP GitHub Server Configuration
+# Copy this to mcp_github_server.yaml and customize
+
+github:
+  # Personal access token (Bearer token authentication)
+  # If not provided, requests will be unauthenticated (60 requests/hour limit)
+  token: "${GITHUB_TOKEN}"
+  
+  # GitHub Enterprise support
+  base_url: "https://api.github.com"
+  
+  # Request timeout in seconds
+  timeout: 30
+  
+  # Delay between requests to respect rate limits
+  rate_limit_delay: 1
+
+logging:
+  # Log level: DEBUG, INFO, WARN, ERROR
+  level: "INFO"
+  
+  # Log format
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+
+# Authentication:
+# - Bearer token authentication using GITHUB_TOKEN or GITHUB_BEARER_TOKEN environment variable
+# - If no token provided, requests are unauthenticated (public repositories, 60 requests/hour limit)
+# - For private repositories or higher rate limits, generate a Personal Access Token from GitHub Settings
+
+# Setup Instructions:
+# 1. Copy this file: cp example_mcp_github_server.yaml mcp_github_server.yaml
+# 2. (Optional) Set GITHUB_TOKEN environment variable with your personal access token
+# 3. Test the server: python -m mcp_github_server.server --config mcp_github_server.yaml
