@@ -570,7 +570,7 @@ class TestHelperFunctions(unittest.TestCase):
     @patch('gh_pulls_summary.generate_markdown_output')
     @patch('gh_pulls_summary.get_authenticated_user_info')
     @patch('gh_pulls_summary.generate_timestamp')
-    @patch('gh_pulls_summary.configure_logging')
+    @patch('logging.basicConfig')
     @patch('gh_pulls_summary.parse_arguments')
     @patch('builtins.print')
     def test_main_output_markdown(self, mock_print, mock_parse, mock_configure, mock_timestamp, mock_auth, mock_generate, mock_open):

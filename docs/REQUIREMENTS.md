@@ -28,9 +28,7 @@ mcp_github_server/
 ```yaml
 # mcp_github_server.yaml
 github:
-  token: "${GITHUB_TOKEN}"           # Personal access token (recommended)
-  username: "user"                   # Username + token/password
-  password: "token_or_password"      # API token or password
+  token: "${GITHUB_TOKEN}"           # Bearer token authentication
   base_url: "https://api.github.com" # GitHub Enterprise support
   timeout: 30
   rate_limit_delay: 1
@@ -39,10 +37,9 @@ logging:
   level: "INFO"
 ```
 
-**Authentication Methods** (priority order):
-1. Personal Access Token (`GITHUB_TOKEN` env var)
-2. Username + token/password  
-3. No authentication (public repos, rate limited)
+**Authentication Methods**:
+- Bearer token authentication using `GITHUB_TOKEN` or `GITHUB_BEARER_TOKEN` environment variable
+- If no token provided, requests are unauthenticated (public repositories, 60 requests/hour limit)
 
 ## Common Patterns
 
@@ -146,7 +143,7 @@ along with dependent targets.
 ### Security (Read-Only Design)
 - **No mutation permissions**: MCP server only reads GitHub data, enhancing AI tool trust
 - **Minimal API scopes**: Only requires read access to repositories, issues, and pull requests
-- **Authentication**: Personal Access Token (recommended), username/password, no-auth (public repos)
+- **Authentication**: Bearer token (Personal Access Token), no-auth for public repos
 - **No credential storage**: Environment variables only, no secrets persisted
 - **Local repo context**: Designed for use within existing repository checkouts
 

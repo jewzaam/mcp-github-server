@@ -21,10 +21,12 @@ toc: install-requirements-other # Update the Markdown TOC in README.md
 .PHONY: test
 test: install-requirements-test # Run all unit tests
 	python -m unittest discover -s tests
+	python -m unittest discover -s mcp_github_server/tests
 
 .PHONY: test-unit
 test-unit: install-requirements-test # Run only unit tests (exclude integration tests)
 	python -m unittest discover -s tests -v
+	python -m unittest discover -s mcp_github_server/tests -v
 
 .PHONY: test-integration-simple
 test-integration-simple: install-requirements-test # Run simple integration tests (requires network)
@@ -43,7 +45,8 @@ test-all: test-unit test-integration-simple # Run both unit and simple integrati
 
 .PHONY: coverage
 coverage: install-requirements-test # Run tests with coverage and generate reports
-	coverage run --omit="tests/*" -m unittest discover -s tests
+	coverage run --omit="tests/*,mcp_github_server/tests/*" -m unittest discover -s tests
+	coverage run -a --omit="tests/*,mcp_github_server/tests/*" -m unittest discover -s mcp_github_server/tests
 	coverage report -m
 	coverage xml
 
@@ -52,6 +55,10 @@ coverage-unit: install-requirements-test # Run coverage on unit tests only
 	coverage run --omit="tests/*" -m unittest discover -s tests -p "test_*.py" -k "not test_integration"
 	coverage report -m
 	coverage xml
+
+.PHONY: lint
+lint: install-requirements-test # Run code linting
+	flake8 gh_pulls_summary.py mcp_github_server/ --max-line-length=100 --exclude=__pycache__
 
 .PHONY: install
 install: install-requirements # Install this package in editable mode

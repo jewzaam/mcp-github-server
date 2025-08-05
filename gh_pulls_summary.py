@@ -159,17 +159,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def configure_logging(debug):
-    """
-    Configures logging for the script.
-    """
-    logging.basicConfig(
-        level=logging.DEBUG if debug else logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        handlers=[
-            logging.StreamHandler(sys.stderr)  # Log to stderr
-        ]
-    )
+
 
 
 def github_api_request(endpoint, params=None, use_paging=True):
@@ -758,7 +748,12 @@ def main():
         print("from within a Git repository with a GitHub remote.", file=sys.stderr)
         sys.exit(1)
 
-    configure_logging(args.debug)
+    # Configure logging
+    logging.basicConfig(
+        level=logging.DEBUG if args.debug else logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[logging.StreamHandler(sys.stderr)]
+    )
 
     try:
         # Generate Markdown output
